@@ -131,7 +131,7 @@ def run_ppo(config) -> None:
         # `num_cpus` specifies the number of CPU cores Ray can use, obtained from the configuration
 
         # use V1 for async engine
-        PPO_RAY_RUNTIME_ENV["env_vars"].update({"VLLM_USE_V1": "1"})
+        PPO_RAY_RUNTIME_ENV["env_vars"].update({"VLLM_USE_V1": "1","WANDB_API_KEY": os.environ.get("WANDB_API_KEY", "")})
 
         ray.init(
             runtime_env=PPO_RAY_RUNTIME_ENV,
