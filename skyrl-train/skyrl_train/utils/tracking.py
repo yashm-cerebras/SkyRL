@@ -23,7 +23,6 @@ from typing import Any, Dict, List, Union
 from loguru import logger
 from omegaconf import DictConfig, OmegaConf
 import pprint
-import os
 
 # TODO(tgriggs): Test all backends.
 class Tracking:
@@ -39,6 +38,8 @@ class Tracking:
 
         if "wandb" in backends:
             import wandb
+            import os
+
             key = os.environ.get('WANDB_API_KEY')
             wandb.login(key=key, relogin=True)
 
