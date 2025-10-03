@@ -38,7 +38,7 @@ uv run --isolated --extra skyrl-train --directory . --frozen --env-file .env -m 
   trainer.algorithm.eps_clip_high=0.28 \
   trainer.hf_save_interval=10 \
   trainer.ckpt_interval=1 \
-  trainer.ckpt_path="/mnt/shared_storage/ckpts/skyagent-32b-r2e-1000-acc-thinking-mini4/" \
+  trainer.ckpt_path="$DATA_DIR/ckpts/skyagent-32b-r2e-1000-acc-thinking-mini4/" \
   trainer.max_ckpts_to_keep=10 \
   trainer.eval_before_train=false \
   trainer.eval_batch_size=256 \
