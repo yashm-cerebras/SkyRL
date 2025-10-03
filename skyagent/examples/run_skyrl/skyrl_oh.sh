@@ -59,4 +59,5 @@ uv run --isolated --extra skyrl-train --directory . --frozen --env-file .env -m 
   environment.env_class=null \
   trainer.logger="wandb" \
   trainer.project_name="skyagent-32b-r2e" \
+  trainer.algorithm.kl_target=null \
   trainer.run_name="skyagent-32b-r2e-1000-acc-thinking-mini4"
