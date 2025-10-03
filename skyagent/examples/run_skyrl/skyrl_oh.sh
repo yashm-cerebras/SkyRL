@@ -1,26 +1,27 @@
 set -x
 
-DATA_DIR="<path_to_dataset>"
+DATA_DIR="$HOME/data/datasets_skyrl"
 train_data=["${DATA_DIR}/train.parquet"]
 test_data=["${DATA_DIR}/validation.parquet"]
 
+export CUDA_VISIBLE_DEVICES=0,1   # change if needed
 
 uv run --isolated --extra skyrl-train --directory . --frozen --env-file .env -m examples.run_skyrl.skyrl_train_main  \
   trainer.algorithm.advantage_estimator="grpo" \
   data.train_data=$train_data \
   data.val_data=$test_data \
-  trainer.policy.model.path="Qwen/Qwen3-32B" \
+  trainer.policy.model.path="Qwen/Qwen2.5-1.5B-Instruct" \
   trainer.placement.colocate_all=true \
   trainer.strategy=fsdp2 \
   trainer.policy.fsdp_config.cpu_offload=true \
   trainer.ref.fsdp_config.cpu_offload=true \
   trainer.policy.sequence_parallel_size=4 \
-  trainer.placement.policy_num_nodes=2 \
-  trainer.placement.policy_num_gpus_per_node=8 \
-  trainer.placement.ref_num_nodes=2 \
-  trainer.placement.ref_num_gpus_per_node=8 \
-  generator.num_inference_engines=4 \
-  generator.inference_engine_tensor_parallel_size=4 \
+  trainer.placement.policy_num_nodes=1 \
+  trainer.placement.policy_num_gpus_per_node=2 \
+  trainer.placement.ref_num_nodes=1 \
+  trainer.placement.ref_num_gpus_per_node=2 \
+  generator.num_inference_engines=1 \
+  generator.inference_engine_tensor_parallel_size=2 \
   trainer.train_batch_size=32 \
   trainer.micro_train_batch_size_per_gpu=1 \
   trainer.micro_forward_batch_size_per_gpu=1 \

@@ -19,7 +19,7 @@ You can download a dataset for training on the SweBench task, such as [NovaSky-A
 Make sure to download the dataset e.g. via
 
 ```bash
-uv run huggingface-cli download NovaSky-AI/SkyRL-v0-293-data --repo-type dataset --local-dir <path_to_swegym_dataset>
+uv run huggingface-cli download NovaSky-AI/SkyRL-v0-293-data --repo-type dataset --local-dir ~/data/datasets_skyrl
 ```
 
 and update the path in `DATA_PATH` in the script
