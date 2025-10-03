@@ -15,7 +15,7 @@ uv run --isolated --extra skyrl-train --directory . --frozen --env-file .env -m 
   trainer.strategy=fsdp2 \
   trainer.policy.fsdp_config.cpu_offload=true \
   trainer.ref.fsdp_config.cpu_offload=true \
-  trainer.policy.sequence_parallel_size=4 \
+  trainer.policy.sequence_parallel_size=2 \
   trainer.placement.policy_num_nodes=1 \
   trainer.placement.policy_num_gpus_per_node=2 \
   trainer.placement.ref_num_nodes=1 \
