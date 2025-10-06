@@ -6,11 +6,11 @@ test_data=["${DATA_DIR}/validation.parquet"]
 
 export CUDA_VISIBLE_DEVICES=0,1   # change if needed
 
-uv run --isolated --extra skyrl-train --directory . --frozen --env-file .env -m examples.run_skyrl.skyrl_train_main  \
+uv run --isolated --with  transformers==4.53.3 --with vllm==0.10.0 --extra skyrl-train --directory . --frozen --env-file .env -m examples.run_skyrl.skyrl_train_main  \
   trainer.algorithm.advantage_estimator="grpo" \
   data.train_data=$train_data \
   data.val_data=$test_data \
-  trainer.policy.model.path="Qwen/Qwen2.5-1.5B-Instruct" \
+  trainer.policy.model.path="Qwen/Qwen3-4B-Instruct-2507" \
   trainer.placement.colocate_all=true \
   trainer.strategy=fsdp2 \
   trainer.policy.fsdp_config.cpu_offload=true \
