@@ -222,7 +222,12 @@ def get_rendezvous_addr_port(placement_group, pg_index: int) -> Tuple[str, int]:
 
     @ray.remote(num_cpus=0, num_gpus=0)
     def get_addr_port():
-        from ray.experimental.collective.util import get_address_and_port
+        try:
+            # Current Ray
+            from ray.train._internal.utils import get_address_and_port
+        except Exception:
+            # Very old Ray fallback
+            from ray.experimental.collective.util import get_address_and_port
 
         return get_address_and_port()
 
