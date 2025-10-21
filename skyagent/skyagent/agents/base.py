@@ -262,7 +262,39 @@ class AgentRunner:
             resolved_list.append(result.get('reward', False))
             has_finish_action_list.append(result.get('finish', False))
             finish_reason_list.append(result.get('finish_reason', None))
-        
+
+
+        # --- SAFETY PATCH: handle missing or empty messages before encoding ---
+        valid_indices = []
+        for i, (prompts, responses) in enumerate(zip(all_prompts, all_responses)):
+            # case 1: no messages at all
+            if (not prompts and not responses):
+                logger.warning(f"[SKIP] Empty conversation at index {i}: no messages to encode.")
+                continue
+            # case 2: malformed message (missing keys)
+            if any(("role" not in m or "content" not in m) for m in (prompts + responses)):
+                logger.warning(f"[SKIP] Malformed message at index {i}: {prompts + responses}")
+                continue
+            valid_indices.append(i)
+
+        # Filter lists to only valid examples to keep lengths consistent
+        all_prompts = [all_prompts[i] for i in valid_indices]
+        all_responses = [all_responses[i] for i in valid_indices]
+        resolved_list = [resolved_list[i] for i in valid_indices]
+        finish_reason_list = [finish_reason_list[i] for i in valid_indices]
+        num_turns = [num_turns[i] for i in valid_indices]
+        error_list = [error_list[i] for i in valid_indices]
+
+        if not all_prompts:
+            logger.error("[FATAL] No valid conversations found — all message lists were empty.")
+            return {
+                'prompt_token_ids': [],
+                'response_ids': [],
+                'rewards': [],
+                'loss_masks': [],
+                'rollout_metrics': {},
+            }
+
         
         # Encode messages, get assitant mask and position ids
         prompt_encodings = self.tokenizer.apply_chat_template(
